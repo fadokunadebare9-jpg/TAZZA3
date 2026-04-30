@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Journey to a Lifetime Moment — Events by Tazza</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --red: #C8001A;
+  --red-dark: #8B0012;
+  --red-glow: rgba(200,0,26,0.12);
+  --red-light: #FFF0F2;
+  --white: #FFFFFF;
+  --cream: #FAF8F5;
+  --cream2: #F4F0EA;
+  --text: #111111;
+  --text2: #3A3330;
+  --muted: #8A7F78;
+  --border: #E8E2DA;
+  --gold: #C9A96E;
+  --dark: #0D0A09;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  color: var(--text);
+  background: var(--cream);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(250,248,245,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 5%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: box-shadow .3s;
+}
+.navbar.scrolled { box-shadow: 0 2px 30px rgba(0,0,0,0.06); }
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nav-logo-circle {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-logo-circle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+}
+.nav-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  display: block;
+  line-height: 1.2;
+}
+.nav-brand-sub {
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all .2s;
+  letter-spacing: .3px;
+}
+.nav-links a:hover { color: var(--red); background: var(--red-light); }
+.nav-links a.active { color: var(--red); font-weight: 500; }
+.nav-cta {
+  background: var(--red) !important;
+  color: white !important;
+  border-radius: 50px !important;
+  padding: 10px 22px !important;
+  font-weight: 500 !important;
+}
+.nav-cta:hover { background: var(--red-dark) !important; color: white !important; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: none;
+  border: none;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all .3s;
+}
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 72px; left: 0; right: 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 5% 24px;
+  z-index: 999;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 15px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: all .2s;
+}
+.mobile-menu a:hover { background: var(--red-light); color: var(--red); }
+.mobile-cta {
+  background: var(--red) !important;
+  color: white !important;
+  text-align: center;
+  margin-top: 8px;
+  border-radius: 50px !important;
+  font-weight: 500 !important;
+}
+
+/* ── HERO PARALLAX ── */
+.hero-parallax {
+  position: relative;
+  height: 100vh;
+  min-height: 680px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--dark);
+}
+
+.parallax-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* SVG texture backgrounds simulating silk/floral/architectural textures */
+.layer-silk {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(200,0,26,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(201,169,110,0.12) 0%, transparent 50%),
+    linear-gradient(135deg, #0D0A09 0%, #1A0A0D 40%, #0F0806 100%);
+}
+
+.layer-texture {
+  opacity: 0.04;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.5) 2px, rgba(255,255,255,0.5) 3px),
+    repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px);
+  background-size: 30px 30px;
+}
+
+.layer-orbs {
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+}
+.orb-1 { width: 600px; height: 600px; background: var(--red); top: -200px; right: -150px; }
+.orb-2 { width: 400px; height: 400px; background: var(--gold); bottom: -100px; left: -80px; opacity: .15; }
+.orb-3 { width: 200px; height: 200px; background: #fff; top: 40%; left: 50%; opacity: .03; }
+
+/* Floating petals / decorative elements */
+.petal {
+  position: absolute;
+  border-radius: 50% 0 50% 0;
+  background: rgba(200,0,26,0.2);
+  border: 1px solid rgba(200,0,26,0.3);
+}
+.p1 { width: 80px; height: 80px; top: 15%; left: 8%; transform: rotate(25deg); }
+.p2 { width: 50px; height: 50px; top: 60%; right: 12%; transform: rotate(-15deg); }
+.p3 { width: 30px; height: 30px; top: 30%; right: 25%; transform: rotate(45deg); opacity: .5; }
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 5%;
+  max-width: 860px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  opacity: .6;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 7vw, 90px);
+  font-weight: 300;
+  color: white;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 28px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--red);
+  font-weight: 400;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: .5px;
+  max-width: 480px;
+  margin: 0 auto 44px;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--red);
+  color: white;
+  text-decoration: none;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all .3s;
+}
+.hero-cta:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(200,0,26,0.35); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.3);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { transform: scaleY(1); opacity: .4; }
+  50% { transform: scaleY(1.3); opacity: .8; }
+}
+
+/* ── SECTION BASE ── */
+.section-wrap {
+  padding: 120px 5%;
+}
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--red);
+}
+
+/* ── SECTION 1: SENSORY INTRO ── */
+.section-sensory {
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.section-sensory::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -200px;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,0,26,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sensory-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.sensory-left h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 4vw, 58px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 28px;
+  letter-spacing: -.5px;
+}
+.sensory-left h2 em {
+  font-style: italic;
+  color: var(--red);
+  font-weight: 400;
+}
+.sensory-left p {
+  color: var(--text2);
+  font-size: 15.5px;
+  line-height: 1.85;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+.sensory-left .highlight-quote {
+  border-left: 2px solid var(--red);
+  padding: 18px 24px;
+  margin: 32px 0;
+  background: var(--red-light);
+  border-radius: 0 12px 12px 0;
+}
+.highlight-quote p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--red-dark);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 !important;
+}
+
+.sensory-right {
+  position: relative;
+}
+.sensory-visual {
+  background: linear-gradient(135deg, var(--dark) 0%, #1A0505 100%);
+  border-radius: 20px;
+  padding: 60px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.sensory-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 80% 20%, rgba(200,0,26,0.25) 0%, transparent 60%);
+}
+.sensory-visual-inner { position: relative; z-index: 2; }
+.sensory-icon-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.s-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(200,0,26,0.2);
+  border: 1px solid rgba(200,0,26,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sensory-visual-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: white;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+.sensory-visual-text em { color: var(--gold); font-style: italic; }
+.sensory-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+.s-tag {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.65);
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  letter-spacing: .5px;
+}
+
+/* ── SECTION 2: STAGES ── */
+.section-stages {
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+.section-stages::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(200,0,26,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(201,169,110,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.stages-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+  z-index: 2;
+}
+.stages-header .eyebrow { justify-content: center; }
+.stages-header .eyebrow::before { display: none; }
+.stages-header .eyebrow::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--red);
+}
+.stages-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 62px);
+  font-weight: 300;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -.5px;
+}
+.stages-header h2 em { font-style: italic; color: var(--red); }
+.stages-header p {
+  color: rgba(255,255,255,0.45);
+  font-size: 15px;
+  font-weight: 300;
+  margin-top: 16px;
+  letter-spacing: .3px;
+}
+
+.stages-timeline {
+  position: relative;
+  z-index: 2;
+}
+
+/* Vertical line */
+.stages-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200,0,26,0.4) 20%, rgba(200,0,26,0.4) 80%, transparent);
+  transform: translateX(-50%);
+}
+
+.stage-item {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  margin-bottom: 80px;
+  align-items: center;
+  position: relative;
+}
+.stage-item:last-child { margin-bottom: 0; }
+.stage-item.reverse .stage-content { order: 3; text-align: left; }
+.stage-item.reverse .stage-empty { order: 1; }
+.stage-item.reverse .stage-center { order: 2; }
+
+.stage-content {
+  padding: 0 50px;
+  text-align: right;
+}
+.stage-item.reverse .stage-content {
+  text-align: left;
+  padding: 0 50px;
+}
+
+.stage-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 300;
+  color: rgba(200,0,26,0.12);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -2px;
+}
+.stage-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.stage-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.stage-title em { font-style: italic; color: var(--red); }
+.stage-body {
+  color: rgba(255,255,255,0.5);
+  font-size: 14.5px;
+  line-height: 1.85;
+  font-weight: 300;
+}
+.stage-pill {
+  display: inline-block;
+  background: rgba(200,0,26,0.15);
+  border: 1px solid rgba(200,0,26,0.25);
+  color: rgba(255,255,255,0.6);
+  font-size: 11px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-top: 16px;
+  letter-spacing: .5px;
+}
+
+.stage-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.stage-dot-outer {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,0,26,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark);
+  transition: all .3s;
+}
+.stage-dot-outer:hover { border-color: var(--red); box-shadow: 0 0 30px rgba(200,0,26,0.3); }
+.stage-dot-inner {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--red);
+}
+.stage-empty { /* placeholder column */ }
+
+/* ── SECTION 3: TAZZA DETAIL ── */
+.section-detail {
+  background: var(--cream);
+  position: relative;
+}
+.detail-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.detail-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -.5px;
+  color: var(--text);
+}
+.detail-header h2 em { font-style: italic; color: var(--red); }
+.detail-header p {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 14px;
+  font-weight: 300;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.detail-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all .35s;
+}
+.detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s ease;
+}
+.detail-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+.detail-card:hover::before { transform: scaleX(1); }
+
+.detail-card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--cream2);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: -2px;
+}
+.detail-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.detail-card-title em { font-style: italic; color: var(--red); }
+.detail-card-body {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.85;
+  font-weight: 300;
+}
+.detail-card-tag {
+  display: inline-block;
+  background: var(--red-light);
+  color: var(--red);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+/* ── SECTION 4: BUDGET TRUST ── */
+.section-trust {
+  background: linear-gradient(160deg, #0D0A09 0%, #1A0505 50%, #0D0A09 100%);
+  position: relative;
+  overflow: hidden;
+}
+.section-trust::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -300px;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,0,26,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.trust-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.trust-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+.trust-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 4vw, 60px);
+  font-weight: 300;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -.5px;
+  margin-bottom: 20px;
+}
+.trust-header h2 em { font-style: italic; color: var(--red); }
+.trust-header p {
+  color: rgba(255,255,255,0.45);
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.trust-rates {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 60px;
+}
+.rate-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  transition: all .3s;
+  cursor: default;
+}
+.rate-card:hover {
+  background: rgba(200,0,26,0.1);
+  border-color: rgba(200,0,26,0.3);
+  transform: translateY(-4px);
+}
+.rate-pct {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.rate-range {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.rate-name {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(200,0,26,0.4), transparent);
+  margin: 0 auto 60px;
+}
+
+.trust-statement {
+  text-align: center;
+  background: rgba(200,0,26,0.08);
+  border: 1px solid rgba(200,0,26,0.2);
+  border-radius: 20px;
+  padding: 52px 60px;
+}
+.trust-statement blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  font-weight: 300;
+  font-style: italic;
+  color: white;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.trust-statement blockquote em { color: var(--red); font-style: normal; }
+.trust-statement p {
+  color: rgba(255,255,255,0.4);
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.trust-payment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+.payment-step {
+  text-align: center;
+  padding: 28px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+}
+.payment-pct {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.payment-name {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.payment-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.3);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ── CTA FOOTER SECTION ── */
+.section-final-cta {
+  background: var(--cream);
+  text-align: center;
+  padding: 100px 5%;
+}
+.final-cta-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.final-cta-inner h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 18px;
+  letter-spacing: -.5px;
+}
+.final-cta-inner h2 em { font-style: italic; color: var(--red); }
+.final-cta-inner p {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.final-cta-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red);
+  color: white;
+  text-decoration: none;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all .3s;
+}
+.btn-red:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 12px 35px rgba(200,0,26,0.3); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  padding: 15px 32px;
+  border-radius: 50px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  border: 1px solid var(--border);
+  transition: all .3s;
+}
+.btn-outline:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 60px 5% 32px;
+}
+.footer-inner { max-width: 1100px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 40px;
+}
+.footer-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.footer-logo-circle {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.footer-logo-circle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+}
+.footer-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  display: block;
+}
+.footer-brand-sub {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,.35);
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 280px;
+}
+.footer-col-title {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.footer-links-list { list-style: none; }
+.footer-links-list li { margin-bottom: 10px; }
+.footer-links-list a {
+  text-decoration: none;
+  color: rgba(255,255,255,.45);
+  font-size: 13px;
+  font-weight: 300;
+  transition: color .2s;
+}
+.footer-links-list a:hover { color: var(--red); }
+.footer-divider {
+  height: 1px;
+  background: rgba(255,255,255,.07);
+  margin-bottom: 24px;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.2); font-weight: 300; }
+.footer-love { font-size: 12px; color: rgba(255,255,255,.2); font-weight: 300; }
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sensory-grid { grid-template-columns: 1fr; gap: 48px; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+  .trust-rates { grid-template-columns: 1fr 1fr; }
+  .trust-payment { grid-template-columns: 1fr; gap: 14px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .stages-timeline::before { left: 36px; }
+  .stage-item { grid-template-columns: 1fr; padding-left: 80px; }
+  .stage-item.reverse .stage-content { order: 0; text-align: left; }
+  .stage-center { position: absolute; left: 8px; flex-direction: row; }
+  .stage-item { position: relative; }
+  .stage-content { padding: 0; text-align: left !important; }
+  .stage-empty { display: none; }
+}
+@media (max-width: 640px) {
+  .navbar { padding: 0 4%; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .trust-rates { grid-template-columns: 1fr 1fr; }
+  .trust-statement { padding: 36px 24px; }
+  .section-wrap { padding: 80px 5%; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-circle"><span>ET</span></div>
+    <div class="nav-brand">
+      <span class="nav-brand-name">Events by Tazza</span>
+      <span class="nav-brand-sub">Premium Event Planning</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="experience.html">The Tazza Experience</a></li>
+    
+    <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="experience.html">The Tazza Experience</a>
+  
+  <a href="contact.html" class="mobile-cta">Contact Us</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO — parallax + emotional headline
+═══════════════════════════════════════════ -->
+<section class="hero-parallax" id="hero-top">
+  <div class="parallax-layer layer-silk" id="parallax-bg"></div>
+  <div class="parallax-layer layer-texture"></div>
+  <div class="parallax-layer layer-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="parallax-layer">
+    <div class="petal p1"></div>
+    <div class="petal p2"></div>
+    <div class="petal p3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">The Journey to a Lifetime Moment</div>
+    <h1 class="hero-title">
+      From a Vision<br>to a <em>Vibration.</em>
+    </h1>
+    <p class="hero-sub">
+      We don't just design events — we engineer the feeling in the room, the breath before the vows, the moment the lights fall perfectly still.
+    </p>
+    <a href="#sensory" class="hero-cta">Begin the Journey &rarr;</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — Sensory Intro
+═══════════════════════════════════════════ -->
+<section class="section-wrap section-sensory" id="sensory">
+  <div class="section-inner">
+    <div class="sensory-grid">
+      <div class="sensory-left reveal">
+        <div class="eyebrow">Experience Engineering</div>
+        <h2>When Your Vision Finally <em>Exhales.</em></h2>
+        <p>
+          There is a moment — often within hours of your first conversation with us — when the weight of it all quietly lifts. Not because the work disappears, but because you finally know it's in the right hands.
+        </p>
+        <p>
+          Bespoke concept creation is not a line item. It is the act of listening so closely to your vision that we can build it before you've even finished describing it. We absorb your references, your silences, your mood — and translate them into a living atmosphere.
+        </p>
+        <div class="highlight-quote">
+          <p>"We create the conditions for relief. Our job begins the moment you stop worrying."</p>
+        </div>
+        <p>
+          From the first mood board to the final coordinate with your last vendor, every decision is made through the lens of a single question: <em>What does she want to feel?</em>
+        </p>
+      </div>
+
+      <div class="sensory-right reveal reveal-delay-2">
+        <div class="sensory-visual">
+          <div class="sensory-visual-inner">
+            <div class="sensory-icon-row">
+              <div class="s-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <div class="s-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              </div>
+              <div class="s-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+            </div>
+            <div class="sensory-visual-text">
+              Your vision gains a <em>visual pulse</em> — colour, texture, light, and story woven into one coherent world.
+            </div>
+            <div class="sensory-tags">
+              <span class="s-tag">Mood Board Creation</span>
+              <span class="s-tag">Concept Development</span>
+              <span class="s-tag">Atmosphere Design</span>
+              <span class="s-tag">Colour Storytelling</span>
+              <span class="s-tag">Guest Experience</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — The 3 Stages (payment as milestones)
+═══════════════════════════════════════════ -->
+<section class="section-wrap section-stages" id="stages">
+  <div class="section-inner">
+    <div class="stages-header reveal">
+      <div class="eyebrow">Behind the Scenes</div>
+      <h2>Three Milestones.<br>One <em>Unforgettable</em> Day.</h2>
+      <p>Each stage of your investment marks a chapter in the unfolding of your moment.</p>
+    </div>
+
+    <div class="stages-timeline">
+
+      <!-- Stage 1 -->
+      <div class="stage-item reveal">
+        <div class="stage-content">
+          <div class="stage-num">01</div>
+          <div class="stage-label">The Blueprint — 40% Booking</div>
+          <div class="stage-title">Where the Dream Gets<br>a <em>Visual Pulse.</em></div>
+          <div class="stage-body">
+            This is where we sit with your vision and give it a heartbeat. Event concept creation and mood board development transform your scattered ideas — the Pinterest boards, the hotel lobbies you've photographed, the feeling you couldn't quite name — into a cohesive, singular world.
+            <br><br>
+            Budget planning begins not as restriction, but as architecture. We build the framework that makes everything else possible.
+          </div>
+          <span class="stage-pill">Concept &amp; Mood Board · Budget Framework · Initial Design Direction</span>
+        </div>
+        <div class="stage-center">
+          <div class="stage-dot-outer"><div class="stage-dot-inner"></div></div>
+        </div>
+        <div class="stage-empty"></div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stage-item reverse reveal reveal-delay-1">
+        <div class="stage-empty"></div>
+        <div class="stage-center">
+          <div class="stage-dot-outer"><div class="stage-dot-inner"></div></div>
+        </div>
+        <div class="stage-content">
+          <div class="stage-num">02</div>
+          <div class="stage-label">The Curation — 30% Midway</div>
+          <div class="stage-title">We Handle the Noise.<br>You Stay in the <em>Magic.</em></div>
+          <div class="stage-body">
+            Premium vendor sourcing is not simply finding vendors — it is curating a cast. Every florist, caterer, lighting designer, and musician is selected for how well they serve your specific vision. We negotiate, communicate, and orchestrate so that you never have to.
+            <br><br>
+            Production planning — the architecture of lighting, sound, and ambiance — happens here. The room does not accidentally feel extraordinary. It is engineered to.
+          </div>
+          <span class="stage-pill">Premium Vendors · Production Design · Venue Walkthrough · Layout Planning</span>
+        </div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stage-item reveal reveal-delay-2">
+        <div class="stage-content">
+          <div class="stage-num">03</div>
+          <div class="stage-label">The Moment — 30% Before Event</div>
+          <div class="stage-title">Your Only Job Is to<br><em>Exist</em> in the Moment.</div>
+          <div class="stage-body">
+            On the day itself, our expanded coordination team moves invisibly. Logistics and operations management ensure every element flows from one heartbeat to the next without friction. Guest journey engineering means your people feel cared for at every turn — from arrival to farewell.
+            <br><br>
+            We've rehearsed it. We've confirmed it. We've timed it. So you can simply arrive, breathe, and let the room do its work.
+          </div>
+          <span class="stage-pill">On-site Team · Guest Journey · Timeline Execution · Full Coordination</span>
+        </div>
+        <div class="stage-center">
+          <div class="stage-dot-outer"><div class="stage-dot-inner"></div></div>
+        </div>
+        <div class="stage-empty"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — Tazza Detail Spotlight
+═══════════════════════════════════════════ -->
+<section class="section-wrap section-detail" id="details">
+  <div class="section-inner">
+    <div class="detail-header reveal">
+      <div class="eyebrow" style="justify-content:center;">The Tazza Detail</div>
+      <h2>The Small Things That<br>Make the <em>Loudest</em> Impression.</h2>
+      <p>Precision lives in the details others overlook.</p>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card reveal">
+        <div class="detail-card-num">01</div>
+        <div class="detail-card-title">Timeline <em>Restructuring</em></div>
+        <div class="detail-card-body">
+          An event with beautiful decor but a fractured schedule will always feel disappointing. Precision timing is what creates flow — the invisible current that carries guests from one moment to the next without disruption, awkward pauses, or rushed transitions.
+          <br><br>
+          We audit, rebuild, and refine your timeline until every minute serves the story.
+        </div>
+        <span class="detail-card-tag">Event Architecture</span>
+      </div>
+
+      <div class="detail-card reveal reveal-delay-1">
+        <div class="detail-card-num">02</div>
+        <div class="detail-card-title">Bridal <em>Assist</em></div>
+        <div class="detail-card-body">
+          There are moments in a wedding day that belong only to the bride — and those are precisely the moments no one should have to manage alone. Our Bridal Assist service is the personal, calm presence that straightens your train, holds your phone, reminds you to eat, and shields the chaos so you only feel the joy.
+          <br><br>
+          The most intimate form of care we offer.
+        </div>
+        <span class="detail-card-tag">Personal Touch</span>
+      </div>
+
+      <div class="detail-card reveal reveal-delay-2">
+        <div class="detail-card-num">03</div>
+        <div class="detail-card-title">Atmosphere <em>Design</em></div>
+        <div class="detail-card-body">
+          Lighting does not decorate a room — it tells a story. Sound does not fill silence — it sets the emotional temperature. Layout does not arrange furniture — it choreographs a journey.
+          <br><br>
+          We combine all three into a single sensory language that speaks before anyone says a word. When guests walk in and instinctively reach for their phones, that is deliberate atmosphere design.
+        </div>
+        <span class="detail-card-tag">Sensory Storytelling</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — Budget Alignment (Trust)
+═══════════════════════════════════════════ -->
+<section class="section-wrap section-trust" id="pricing">
+  <div class="trust-inner">
+    <div class="trust-header reveal">
+      <div class="eyebrow" style="justify-content:center;color:rgba(255,255,255,.35);">Budget Alignment</div>
+      <h2>Why We Charge a<br><em>Percentage.</em></h2>
+      <p>
+        Our pricing is not arbitrary. It is a deliberate structure that ties our success directly to yours — ensuring that as the scale and complexity of your vision grows, so does the depth of our attention.
+      </p>
+    </div>
+
+    <div class="trust-rates reveal">
+      <div class="rate-card">
+        <div class="rate-pct">6%</div>
+        <div class="rate-range">Event Day Only</div>
+        <div class="rate-name">Day-of Coordination</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-pct">7–8%</div>
+        <div class="rate-range">Partial Planning</div>
+        <div class="rate-name">Structure & Refinement</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-pct">10–15%</div>
+        <div class="rate-range">₦1M – ₦25M</div>
+        <div class="rate-name">Full Planning</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-pct">8–10%</div>
+        <div class="rate-range">₦25M+</div>
+        <div class="rate-name">Premium Production</div>
+      </div>
+    </div>
+
+    <div class="trust-divider"></div>
+
+    <div class="trust-statement reveal">
+      <blockquote>
+        "Our pricing ensures our goals are <em>perfectly aligned</em> with the scale and complexity of your vision. When your event succeeds, we succeed. There is no other way we would have it."
+      </blockquote>
+      <p>— Events by Tazza</p>
+    </div>
+
+    <div class="trust-payment reveal reveal-delay-1">
+      <div class="payment-step">
+        <div class="payment-pct">40%</div>
+        <div class="payment-name">Initial Booking</div>
+        <div class="payment-desc">The dream is confirmed. The Blueprint begins. Your vision enters the world.</div>
+      </div>
+      <div class="payment-step">
+        <div class="payment-pct">30%</div>
+        <div class="payment-name">Midway Through</div>
+        <div class="payment-desc">The Curation is in motion. Vendors are chosen. The world is being built.</div>
+      </div>
+      <div class="payment-step">
+        <div class="payment-pct">30%</div>
+        <div class="payment-name">Before Event Date</div>
+        <div class="payment-desc">Everything is ready. Your only task now is to arrive and be present.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FINAL CTA
+═══════════════════════════════════════════ -->
+<section class="section-final-cta">
+  <div class="final-cta-inner reveal">
+    <div class="eyebrow" style="justify-content:center;">Ready?</div>
+    <h2>Your Moment is<br><em>Waiting</em> to be Built.</h2>
+    <p>
+      Every extraordinary event began with a single conversation. Tell us your vision, and we will show you what it looks like when it breathes.
+    </p>
+    <div class="final-cta-btns">
+      <a href="contact.html" class="btn-red">Begin the Conversation &rarr;</a>
+      
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-wrap">
+          <div class="footer-logo-circle"><span>ET</span></div>
+          <div>
+            <span class="footer-brand-name">Events by Tazza</span>
+            <span class="footer-brand-sub">Premium Event Planning</span>
+          </div>
+        </div>
+        <p class="footer-tagline">We don't just plan events — we craft moments that echo long after the last guest leaves.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Pages</div>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="experience.html">The Tazza Experience</a></li>
+          
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get in Touch</div>
+        <ul class="footer-links-list">
+          <li><a href="mailto:hello@eventsbytazza.com">hello@eventsbytazza.com</a></li>
+          <li><a href="tel:+2348000000000">+234 800 000 0000</a></li>
+          <li><a href="contact.html">WhatsApp Us</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Events by Tazza. All rights reserved.</span>
+      <span class="footer-love">Crafted for unforgettable moments</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Navbar scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── Mobile menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+// ── Parallax hero
+const parallaxBg = document.getElementById('parallax-bg');
+const heroPetals = document.querySelectorAll('.petal');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  if (parallaxBg) {
+    parallaxBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+  }
+  heroPetals.forEach((petal, i) => {
+    const speed = 0.15 + i * 0.08;
+    petal.style.transform = petal.style.transform.replace(/translateY\([^)]*\)/g, '') +
+      ` translateY(${scrolled * speed}px)`;
+  });
+}, { passive: true });
+
+// ── Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+reveals.forEach(el => observer.observe(el));
+
+// ── Orb subtle mouse drift
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 30;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  document.querySelectorAll('.orb').forEach((orb, i) => {
+    const factor = (i + 1) * 0.4;
+    orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+  });
+});
+</script>
+</body>
+</html>

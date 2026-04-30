@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Events by Tazza — We Create Moments That Last</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #C8001A;
+    --red-dark: #A30015;
+    --red-light: #FFF0F2;
+    --red-mid: #FFD6DB;
+    --white: #FFFFFF;
+    --off: #FAFAFA;
+    --off2: #F5F5F3;
+    --text: #111111;
+    --text2: #444444;
+    --muted: #888888;
+    --border: #EBEBEB;
+    --dark: #0F0F0F;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: box-shadow .3s;
+  }
+  .navbar.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.07); }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-logo-circle span {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+  }
+  .nav-brand { line-height: 1.2; }
+  .nav-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+  }
+  .nav-brand-sub {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 13.5px;
+    font-weight: 400;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--red); background: var(--red-light); }
+
+  .nav-cta {
+    background: var(--red) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 10px 22px !important;
+    font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: var(--red-dark) !important; color: white !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all .3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 72px; left: 0; right: 0;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 5% 24px;
+    z-index: 999;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 15px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    transition: all .2s;
+    display: block;
+  }
+  .mobile-menu a:hover { background: var(--red-light); color: var(--red); }
+  .mobile-cta {
+    background: var(--red) !important;
+    color: white !important;
+    text-align: center;
+    margin-top: 8px;
+    border-radius: 50px !important;
+    font-weight: 500 !important;
+  }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--red-light);
+    pointer-events: none;
+  }
+  .hero-bg-circle.c1 { width: 560px; height: 560px; top: -160px; right: -120px; opacity: .6; }
+  .hero-bg-circle.c2 { width: 300px; height: 300px; bottom: -80px; left: -60px; opacity: .4; }
+  .hero-bg-circle.c3 { width: 120px; height: 120px; top: 200px; left: 20%; opacity: .3; }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-light);
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 30px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    border: 1px solid var(--red-mid);
+  }
+  .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .hero-left h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  .hero-left h1 em { color: var(--red); font-style: italic; }
+
+  .hero-left p {
+    font-size: 16px;
+    color: var(--text2);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 460px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--red); color: white;
+    font-size: 14px; font-weight: 500;
+    padding: 16px 32px; border-radius: 50px;
+    text-decoration: none; transition: all .25s;
+    border: 2px solid var(--red);
+  }
+  .btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent; color: var(--text);
+    font-size: 14px; font-weight: 500;
+    padding: 16px 32px; border-radius: 50px;
+    text-decoration: none; transition: all .25s;
+    border: 2px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+
+  .hero-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 36px;
+  }
+  .hero-chip {
+    background: var(--off2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--text2);
+    transition: all .2s;
+    cursor: default;
+  }
+  .hero-chip:hover { background: var(--red-light); border-color: var(--red-mid); color: var(--red); }
+
+  /* Hero Right — stat cards */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .hero-stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: box-shadow .2s;
+  }
+  .hero-stat-card:hover { box-shadow: 0 8px 30px rgba(200,0,26,.08); border-color: var(--red-mid); }
+  .hero-stat-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--red-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--red); line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── WHAT WE DO (teaser) ── */
+  #what-we-do {
+    padding: 90px 5%;
+    background: var(--off);
+  }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3vw, 40px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .section-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 540px;
+    line-height: 1.75;
+    margin-bottom: 48px;
+  }
+
+  .teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .teaser-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    transition: all .25s;
+  }
+  .teaser-card:hover {
+    border-color: var(--red);
+    box-shadow: 0 12px 40px rgba(200,0,26,.08);
+    transform: translateY(-4px);
+  }
+  .teaser-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--red-light);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .teaser-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .teaser-desc {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .teaser-link {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .teaser-link:hover { gap: 10px; }
+
+  .teaser-cta {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 56px 5% 28px;
+    color: rgba(255,255,255,.7);
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 40px;
+  }
+  .footer-logo-wrap {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .footer-logo-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .footer-logo-circle span {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 14px; color: white;
+  }
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700; color: white; display: block;
+  }
+  .footer-brand-sub { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.35); }
+  .footer-tagline { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.45); max-width: 240px; }
+
+  .footer-col-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); font-weight: 500; margin-bottom: 16px; }
+  .footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links-list a {
+    text-decoration: none; color: rgba(255,255,255,.5); font-size: 13.5px;
+    transition: color .2s;
+  }
+  .footer-links-list a:hover { color: white; }
+
+  .footer-divider { height: 1px; background: rgba(255,255,255,.08); margin-bottom: 22px; }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,.25); }
+  .footer-love { font-size: 12px; color: rgba(255,255,255,.25); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp .7s ease both; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .3s; }
+  .delay-4 { animation-delay: .4s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-right { display: none; }
+    #index { padding: 100px 5% 60px; }
+    .teaser-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-left h1 { font-size: 28px; }
+    .hero-btns { flex-direction: column; }
+    .btn-primary, .btn-secondary { text-align: center; justify-content: center; }
+    .navbar { padding: 0 4%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#index" class="nav-logo">
+    <div class="nav-logo-circle"><span>ET</span></div>
+    <div class="nav-brand">
+      <span class="nav-brand-name">Events by Tazza</span>
+      <span class="nav-brand-sub">Premium Event Planning</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="experience.html">The Tazza Experience</a></li>
+    <li><a href="investment.html">Investment</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="experience.html">The Tazza Experience</a>
+  <a href="investment.html">Investment</a>
+  <a href="contact.html" class="mobile-cta">Contact Us</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-bg-circle c3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag fade-up">
+        <span class="hero-dot"></span>
+        Curated Experiences
+      </div>
+      <h1 class="fade-up delay-1">We Don't Just Plan Events — We Create <em>Moments That Last</em> a Lifetime</h1>
+      <p class="fade-up delay-2">Tailored experiences designed to reflect your vision, preferences, and desired experience.</p>
+      <div class="hero-btns fade-up delay-3">
+        <a href="investment.html" class="btn-primary">Select Your Experience &rarr;</a>
+        <a href="experience.html" class="btn-secondary">Our Approach</a>
+      </div>
+      <div class="hero-chips fade-up delay-4">
+        <span class="hero-chip">Weddings</span>
+        <span class="hero-chip">Corporate Events</span>
+        <span class="hero-chip">Private Galas</span>
+        <span class="hero-chip">Birthdays</span>
+        <span class="hero-chip">Celebrations</span>
+      </div>
+    </div>
+    </div>
+</section>
+
+<!-- WHAT WE DO — teaser -->
+<section id="what-we-do">
+  <div class="section-inner">
+    <p class="section-eyebrow">What We Do</p>
+    <h2 class="section-title">Every Detail, Perfectly <em style="color:var(--red);font-style:italic">Handled</em></h2>
+    <p class="section-sub">From intimate gatherings to grand celebrations, we design and execute events that leave lasting impressions.</p>
+
+    <div class="teaser-grid">
+      <div class="teaser-card">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="teaser-title">Weddings &amp; Celebrations</div>
+        <p class="teaser-desc">Intimate ceremonies to grand receptions — every detail curated to tell your unique love story.</p>
+        <a href="services.html" class="teaser-link">Learn more &rarr;</a>
+      </div>
+
+      <div class="teaser-card">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="teaser-title">Corporate Events</div>
+        <p class="teaser-desc">Conferences, galas, and launches designed to impress clients, inspire teams, and elevate your brand.</p>
+        <a href="services.html" class="teaser-link">Learn more &rarr;</a>
+      </div>
+
+      <div class="teaser-card">
+        <div class="teaser-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="teaser-title">Private Galas &amp; Parties</div>
+        <p class="teaser-desc">Exclusive, high-touch experiences for birthdays, anniversaries, and milestone moments you'll never forget.</p>
+        <a href="services.html" class="teaser-link">Learn more &rarr;</a>
+      </div>
+    </div>
+
+    <div class="teaser-cta">
+      <a href="services.html" class="btn-primary">View All Services &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-wrap">
+          <div class="footer-logo-circle"><span>ET</span></div>
+          <div>
+            <span class="footer-brand-name">Events by Tazza</span>
+            <span class="footer-brand-sub">Premium Event Planning</span>
+          </div>
+        </div>
+        <p class="footer-tagline">We don't just plan events — we craft moments that echo long after the last guest leaves.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Pages</div>
+        <ul class="footer-links-list">
+          <li><a href="#index">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="experience.html">The Tazza Experience</a></li>
+          <li><a href="investment.html">Investment</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get in Touch</div>
+        <ul class="footer-links-list">
+          <li><a href="mailto:eventbytazza@gmail.com">eventbytazza@gmail.com</a></li>
+          <li><a href="tel:+2348106649574">+234 8106649574</a></li>
+          <li><a href="contact.html">WhatsApp Us</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Events by Tazza. All rights reserved.</span>
+      <span class="footer-love">Crafted for unforgettable moments</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+</script>
+</body>
+</html>

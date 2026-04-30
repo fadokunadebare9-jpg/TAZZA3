@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Get a Proposal — Events by Tazza</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #C8001A;
+    --red-dark: #A30015;
+    --red-light: #FFF0F2;
+    --red-mid: #FFD6DB;
+    --white: #FFFFFF;
+    --off: #FAFAFA;
+    --off2: #F5F5F3;
+    --text: #111111;
+    --text2: #444444;
+    --muted: #888888;
+    --border: #EBEBEB;
+    --dark: #0F0F0F;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%; height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: box-shadow .3s;
+  }
+  .navbar.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.07); }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo-circle {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--red);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .nav-logo-circle span { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 14px; color: white; }
+  .nav-brand { line-height: 1.2; }
+  .nav-brand-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--text); display: block; }
+  .nav-brand-sub { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text2); font-size: 13.5px; font-weight: 400;
+    padding: 8px 14px; border-radius: 8px; transition: all .2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--red); background: var(--red-light); }
+  .nav-links a.active { color: var(--red); font-weight: 500; }
+  .nav-cta { background: var(--red) !important; color: white !important; border-radius: 50px !important; padding: 10px 22px !important; font-weight: 500 !important; }
+  .nav-cta:hover { background: var(--red-dark) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
+  .mobile-menu {
+    display: none; position: fixed; top: 72px; left: 0; right: 0;
+    background: white; border-bottom: 1px solid var(--border);
+    padding: 16px 5% 24px; z-index: 999; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { text-decoration: none; color: var(--text2); font-size: 15px; padding: 12px 16px; border-radius: 10px; transition: all .2s; display: block; }
+  .mobile-menu a:hover { background: var(--red-light); color: var(--red); }
+  .mobile-cta { background: var(--red) !important; color: white !important; text-align: center; margin-top: 8px; border-radius: 50px !important; font-weight: 500 !important; }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 120px 5% 64px;
+    background: var(--white);
+    position: relative; overflow: hidden;
+  }
+  .hero-bg { position: absolute; border-radius: 50%; background: var(--red-light); pointer-events: none; }
+  .hero-bg.b1 { width: 500px; height: 500px; top: -180px; right: -100px; opacity: .5; }
+  .hero-bg.b2 { width: 180px; height: 180px; bottom: -50px; left: 8%; opacity: .3; }
+
+  .page-hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+  .breadcrumb a { color: var(--red); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .page-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--red-light); color: var(--red);
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 7px 16px; border-radius: 30px; margin-bottom: 20px;
+    font-weight: 500; border: 1px solid var(--red-mid);
+  }
+  .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 50px);
+    font-weight: 700; line-height: 1.15; color: var(--text); margin-bottom: 16px;
+  }
+  .page-hero h1 em { color: var(--red); font-style: italic; }
+  .page-hero p { font-size: 15.5px; color: var(--text2); line-height: 1.75; max-width: 520px; }
+
+  /* ── FORM LAYOUT ── */
+  #proposal { padding: 60px 5% 80px; background: var(--off); }
+  .proposal-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 52px; align-items: start; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 96px; }
+  .sidebar-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px 24px; margin-bottom: 20px;
+  }
+  .sidebar-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 16px;
+  }
+  .sidebar-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .sidebar-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .sidebar-icon {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--red-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sidebar-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+  .sidebar-value { font-size: 13.5px; color: var(--text); }
+
+  .wa-card {
+    background: #25D366; border-radius: 20px;
+    padding: 24px; text-align: center; color: white;
+  }
+  .wa-card-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .wa-card-sub { font-size: 12.5px; opacity: .85; margin-bottom: 16px; line-height: 1.5; }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; color: #25D366;
+    font-size: 13px; font-weight: 600;
+    padding: 11px 22px; border-radius: 50px;
+    text-decoration: none; transition: all .2s;
+  }
+  .wa-btn:hover { background: rgba(255,255,255,.88); }
+
+  /* Steps sidebar */
+  .steps-card {
+    background: var(--dark); border-radius: 20px; padding: 28px 24px; color: white;
+  }
+  .steps-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 600; color: white; margin-bottom: 20px;
+  }
+  .step-item { display: flex; gap: 14px; margin-bottom: 18px; }
+  .step-item:last-child { margin-bottom: 0; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--red);
+    font-size: 12px; font-weight: 700; color: white;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text-title { font-size: 13px; font-weight: 500; color: white; margin-bottom: 2px; }
+  .step-text-sub { font-size: 11.5px; color: rgba(255,255,255,.45); line-height: 1.5; }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 24px; padding: 44px 40px;
+  }
+  .form-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 600; color: var(--text);
+    margin-bottom: 4px; margin-top: 36px;
+  }
+  .form-section-title:first-child { margin-top: 0; }
+  .form-section-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 20px; }
+  .form-divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--text2); margin-bottom: 7px; letter-spacing: .3px;
+  }
+  .form-label .req { color: var(--red); margin-left: 2px; }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid var(--border); border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--white);
+    transition: border-color .2s; outline: none; appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--red); }
+  .form-input::placeholder, .form-textarea::placeholder { color: #bbb; }
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+  /* Checkbox group */
+  .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .checkbox-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border: 1.5px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: all .2s;
+    font-size: 13px; color: var(--text2);
+    user-select: none;
+  }
+  .checkbox-item:hover { border-color: var(--red-mid); background: var(--red-light); color: var(--red); }
+  .checkbox-item.checked { border-color: var(--red); background: var(--red-light); color: var(--red); font-weight: 500; }
+  .checkbox-item input { display: none; }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 1.5px solid var(--border); background: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .2s;
+  }
+  .checkbox-item.checked .check-box { background: var(--red); border-color: var(--red); }
+  .check-mark { color: white; font-size: 11px; display: none; }
+  .checkbox-item.checked .check-mark { display: block; }
+
+  /* Submit */
+  .form-submit {
+    width: 100%; padding: 17px 28px;
+    background: var(--red); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    border: none; border-radius: 50px; cursor: pointer;
+    transition: all .25s; letter-spacing: .3px;
+    margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .form-submit:hover { background: var(--red-dark); transform: translateY(-1px); }
+  .form-submit:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+
+  .form-note {
+    text-align: center; font-size: 12px; color: var(--muted);
+    margin-top: 14px; line-height: 1.6;
+  }
+
+  /* Progress bar */
+  .form-progress {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 36px;
+  }
+  .progress-step {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1; position: relative;
+  }
+  .progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute; top: 14px; left: 50%; width: 100%; height: 2px;
+    background: var(--border); z-index: 0;
+  }
+  .progress-step.done::after, .progress-step.active::after { background: var(--red); }
+  .prog-circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--border); background: white;
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1; transition: all .3s;
+  }
+  .progress-step.active .prog-circle { border-color: var(--red); background: var(--red); color: white; }
+  .progress-step.done .prog-circle { border-color: var(--red); background: var(--red); color: white; }
+  .prog-label { font-size: 10px; color: var(--muted); margin-top: 6px; text-align: center; white-space: nowrap; }
+  .progress-step.active .prog-label { color: var(--red); font-weight: 500; }
+
+  /* Panels */
+  .form-panel { display: none; }
+  .form-panel.active { display: block; }
+
+  .panel-nav { display: flex; gap: 12px; margin-top: 28px; }
+  .btn-back {
+    padding: 14px 28px; border-radius: 50px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    background: transparent; color: var(--text2);
+    border: 1.5px solid var(--border); transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-back:hover { border-color: var(--red); color: var(--red); }
+  .btn-next {
+    flex: 1; padding: 14px 28px; border-radius: 50px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    background: var(--red); color: white;
+    border: none; transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-next:hover { background: var(--red-dark); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); padding: 56px 5% 28px; color: rgba(255,255,255,.7); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+  .footer-logo-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .footer-logo-circle { width: 44px; height: 44px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .footer-logo-circle span { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 14px; color: white; }
+  .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: white; display: block; }
+  .footer-brand-sub { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.35); }
+  .footer-tagline { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.45); max-width: 240px; }
+  .footer-col-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); font-weight: 500; margin-bottom: 16px; }
+  .footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links-list a { text-decoration: none; color: rgba(255,255,255,.5); font-size: 13.5px; transition: color .2s; }
+  .footer-links-list a:hover { color: white; }
+  .footer-divider { height: 1px; background: rgba(255,255,255,.08); margin-bottom: 22px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-copy, .footer-love { font-size: 12px; color: rgba(255,255,255,.25); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .fade-up { animation: fadeUp .6s ease both; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .proposal-inner { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .sidebar-card, .wa-card, .steps-card { max-width: 600px; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .page-hero { padding: 100px 5% 48px; }
+    #proposal { padding: 48px 5% 64px; }
+    .form-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .prog-label { font-size: 9px; }
+  }
+  @media (max-width: 480px) {
+    .navbar { padding: 0 4%; }
+    .page-hero { padding: 96px 4% 44px; }
+    #proposal { padding: 40px 4% 56px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-circle"><span>ET</span></div>
+    <div class="nav-brand">
+      <span class="nav-brand-name">Events by Tazza</span>
+      <span class="nav-brand-sub">Premium Event Planning</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="experience.html">The Tazza Experience</a></li>
+    
+    <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="experience.html">The Tazza Experience</a>
+  <a href="https://w.app/eventsbytazza" class="mobile-cta">Contact Us</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="hero-bg b1"></div>
+  <div class="hero-bg b2"></div>
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span style="color:var(--border)">›</span>
+      <a href="services.html">Services</a>
+      <span style="color:var(--border)">›</span>
+      <span>Get a Proposal</span>
+    </div>
+    <div class="page-eyebrow fade-up">
+      <span class="eyebrow-dot"></span>
+      Let's Begin
+    </div>
+    <h1 class="fade-up delay-1">Tell Us About Your <em>Dream Event</em></h1>
+    <p class="fade-up delay-2">Fill in the details below and we'll put together a personalised proposal. Once submitted, you'll be connected directly with Tazza on WhatsApp to continue the conversation.</p>
+  </div>
+</div>
+
+<!-- PROPOSAL SECTION -->
+<section id="proposal">
+  <div class="proposal-inner">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Contact Details</div>
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="sidebar-label">Email</div>
+            <div class="sidebar-value">eventsbytazza@gmail.com</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.36 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 极简主义风格，注重功能性和简洁性。
+          </div>
+          <div>
+            <div class="sidebar-label">WhatsApp</div>
+            <div class="sidebar-value">+234 8106649574</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="sidebar-label">Response Time</div>
+            <div class="sidebar-value">Within 24 hours</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="sidebar-label">Location</div>
+            <div class="sidebar-value">Nigeria — Nationwide</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Card -->
+      <div class="wa-card">
+        <div class="wa-card-title">Prefer to chat first?</div>
+        <div class="wa-card-sub">Send us a message directly on WhatsApp and we'll respond right away.</div>
+        <a href="https://w.app/eventsbytazza" target="_blank" class="wa-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+
+      <!-- Steps -->
+      <div class="steps-card" style="margin-top:20px;">
+        <div class="steps-card-title">What happens next</div>
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-text-title">Submit your details</div>
+            <div class="step-text-sub">Fill in the form — takes about 3 minutes.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-text-title">WhatsApp redirect</div>
+            <div class="step-text-sub">You'll be sent straight to WhatsApp with your info pre-filled.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-text-title">We review &amp; respond</div>
+            <div class="step-text-sub">Tazza personally reviews your event and replies within 24 hours.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-text-title">Your proposal is ready</div>
+            <div class="step-text-sub">A tailored proposal crafted around your vision — no generic quotes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+      <!-- Progress -->
+      <div class="form-progress">
+        <div class="progress-step active" id="prog-1">
+          <div class="prog-circle">1</div>
+          <div class="prog-label">You</div>
+        </div>
+        <div class="progress-step" id="prog-2">
+          <div class="prog-circle">2</div>
+          <div class="prog-label">Event</div>
+        </div>
+        <div class="progress-step" id="prog-3">
+          <div class="prog-circle">3</div>
+          <div class="prog-label">Vision</div>
+        </div>
+        <div class="progress-step" id="prog-4">
+          <div class="prog-circle">4</div>
+          <div class="prog-label">Vendors</div>
+        </div>
+      </div>
+
+      <!-- PANEL 1: About You -->
+      <div class="form-panel active" id="panel-1">
+        <div class="form-section-title">About You</div>
+        <div class="form-section-sub">Let's start with the basics so we know who we're working with.</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name <span class="req">*</span></label>
+            <input class="form-input" id="firstName" type="text" placeholder="e.g. Amina" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name <span class="req">*</span></label>
+            <input class="form-input" id="lastName" type="text" placeholder="e.g. Yusuf" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone / WhatsApp <span class="req">*</span></label>
+            <input class="form-input" id="phone" type="tel" placeholder="+234 8106649574" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" id="email" type="email" placeholder="your@email.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">How did you hear about us?</label>
+          <select class="form-select" id="referral">
+            <option value="">Select one...</option>
+            <option>Instagram</option>
+            <option>Facebook</option>
+            <option>WhatsApp</option>
+            <option>Referral from a friend</option>
+            <option>Google</option>
+            <option>I've worked with Tazza before</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="panel-nav">
+          <button class="btn-next" onclick="goTo(2)">Next: Event Details &rarr;</button>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Event Details -->
+      <div class="form-panel" id="panel-2">
+        <div class="form-section-title">Event Details</div>
+        <div class="form-section-sub">Tell us about the event itself — the basics help us match you to the right package.</div>
+
+        <div class="form-group">
+          <label class="form-label">Event Type <span class="req">*</span></label>
+          <select class="form-select" id="eventType">
+            <option value="">Select event type...</option>
+            <option>Wedding</option>
+            <option>Engagement / Introduction</option>
+            <option>Corporate Event</option>
+            <option>Birthday Celebration</option>
+            <option>Private Gala / Dinner</option>
+            <option>Baby Shower / Naming Ceremony</option>
+            <option>Graduation Party</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Event Date <span class="req">*</span></label>
+            <input class="form-input" id="eventDate" type="date" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Guest Count <span class="req">*</span></label>
+            <select class="form-select" id="guestCount">
+              <option value="">Select range...</option>
+              <option>Under 50 guests</option>
+              <option>50 – 100 guests</option>
+              <option>100 – 200 guests</option>
+              <option>200 – 400 guests</option>
+              <option>400 – 600 guests</option>
+              <option>600+ guests</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Budget Range <span class="req">*</span></label>
+          <select class="form-select" id="budget">
+            <option value="">Select your budget tier...</option>
+            <option>The Essential — ₦1M to ₦10M</option>
+            <option>The Immersive — ₦11M to ₦25M</option>
+            <option>The Elevated — ₦25M+</option>
+            <option>Not sure yet — need guidance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Do you have a venue in mind?</label>
+          <select class="form-select" id="venueStatus">
+            <option value="">Select one...</option>
+            <option>Yes — venue is confirmed</option>
+            <option>Yes — shortlisted a few options</option>
+            <option>No — need help finding a venue</option>
+            <option>Event is at home / private residence</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Venue Name / Location (if known)</label>
+          <input class="form-input" id="venue" type="text" placeholder="e.g. Eko Hotel, Lagos or TBD" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Package Interested In</label>
+          <select class="form-select" id="package">
+            <option value="">Select a package...</option>
+            <option>Full Planning — Essential (₦1M–₦10M)</option>
+            <option>Full Planning — Immersive (₦11M–₦25M)</option>
+            <option>Full Planning — Elevated (₦25M+)</option>
+            <option>Partial Planning &amp; Vendor Management</option>
+            <option>Event Day Coordination Only</option>
+            <option>Not sure — need a recommendation</option>
+          </select>
+        </div>
+
+        <div class="panel-nav">
+          <button class="btn-back" onclick="goTo(1)">&larr; Back</button>
+          <button class="btn-next" onclick="goTo(3)">Next: Your Vision &rarr;</button>
+        </div>
+      </div>
+
+      <!-- PANEL 3: Vision & Style -->
+      <div class="form-panel" id="panel-3">
+        <div class="form-section-title">Your Vision &amp; Style</div>
+        <div class="form-section-sub">This is where your event starts to come alive. The more you share, the better we can tailor things for you.</div>
+
+        <div class="form-group">
+          <label class="form-label">Event Theme / Aesthetic</label>
+          <select class="form-select" id="theme">
+            <option value="">Select a direction...</option>
+            <option>Elegant &amp; Classic</option>
+            <option>Afro-luxe / Cultural Fusion</option>
+            <option>Modern &amp; Minimalist</option>
+            <option>Rustic / Garden / Outdoor</option>
+            <option>Glam &amp; Maximalist</option>
+            <option>Black-tie / Formal</option>
+            <option>Colourful &amp; Vibrant</option>
+            <option>Custom / Tell us more below</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Colour Palette in Mind</label>
+          <input class="form-input" id="colours" type="text" placeholder="e.g. Gold, ivory and dusty rose — or 'open to suggestions'" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Describe your dream event</label>
+          <textarea class="form-textarea" id="vision" style="min-height:130px;" placeholder="Paint us a picture — the mood, the feeling, the wow moment you want guests to experience. Don't hold back."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Is there anything that is a must-have?</label>
+          <textarea class="form-textarea" id="mustHave" placeholder="e.g. Live band, specific caterer, fireworks, a custom floral arch..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Anything to absolutely avoid?</label>
+          <textarea class="form-textarea" id="mustAvoid" placeholder="e.g. Certain colours, balloon décor, certain food types..."></textarea>
+        </div>
+
+        <div class="panel-nav">
+          <button class="btn-back" onclick="goTo(2)">&larr; Back</button>
+          <button class="btn-next" onclick="goTo(4)">Next: Vendors &rarr;</button>
+        </div>
+      </div>
+
+      <!-- PANEL 4: Vendors -->
+      <div class="form-panel" id="panel-4">
+        <div class="form-section-title">Vendor Preferences</div>
+        <div class="form-section-sub">Let us know which vendors you already have and which you need help sourcing.</div>
+
+        <div class="form-group">
+          <label class="form-label" style="margin-bottom:12px;">Which vendors do you already have confirmed?</label>
+          <div class="checkbox-grid" id="confirmedVendors">
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Caterer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Caterer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Photographer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Photographer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Videographer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Videographer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="DJ" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              DJ
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Live Band" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Live Band
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Decorator / Florist" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Decorator / Florist
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="MC / Host" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              MC / Host
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Make-up Artist" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Make-up Artist
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:8px;">
+          <label class="form-label" style="margin-bottom:12px;">Which vendors do you need us to source?</label>
+          <div class="checkbox-grid" id="neededVendors">
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Caterer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Caterer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Photographer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Photographer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Videographer" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Videographer
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="DJ" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              DJ
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Live Band" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Live Band
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Decorator / Florist" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Decorator / Florist
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="MC / Host" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              MC / Host
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Make-up Artist" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Make-up Artist
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Venue" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Venue
+            </label>
+            <label class="checkbox-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Transportation / Logistics" />
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Transportation
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preferred vendor style or any specific vendors in mind?</label>
+          <textarea class="form-textarea" id="vendorNotes" placeholder="e.g. We'd love a photographer with a documentary style, and we have a caterer in mind but need a backup..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Anything else you'd like us to know?</label>
+          <textarea class="form-textarea" id="extraNotes" placeholder="Family dynamics, special requests, mobility needs, surprise elements, dietary requirements..."></textarea>
+        </div>
+
+        <div class="panel-nav">
+          <button class="btn-back" onclick="goTo(3)">&larr; Back</button>
+        </div>
+
+        <button class="form-submit" onclick="submitToWhatsApp()" style="margin-top:20px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Send My Proposal Request via WhatsApp
+        </button>
+        <p class="form-note">Your details will open a pre-filled WhatsApp message directly to Tazza.<br>We'll review and respond within 24 hours.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-wrap">
+          <div class="footer-logo-circle"><span>ET</span></div>
+          <div>
+            <span class="footer-brand-name">Events by Tazza</span>
+            <span class="footer-brand-sub">Premium Event Planning</span>
+          </div>
+        </div>
+        <p class="footer-tagline">We don't just plan events — we craft moments that echo long after the last guest leaves.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Pages</div>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="experience.html">The Tazza Experience</a></li>
+          
+          <li><a href="https://w.app/eventsbytazza">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get in Touch</div>
+        <ul class="footer-links-list">
+          <li><a href="mailto:eventsbytazza@gmail.com">eventsbytazza@gmail.com</a></li>
+          <li><a href="tel:+2348106649574">+234 8106649574</a></li>
+          <li><a href="https://w.app/eventsbytazza">WhatsApp Us</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Events by Tazza. All rights reserved.</span>
+      <span class="footer-love">Crafted for unforgettable moments</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── NAVBAR SCROLL ──
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  document.querySelectorAll('.mobile-menu a').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // ── MULTI-STEP FORM ──
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  function goTo(step) {
+    document.getElementById('panel-' + currentStep).classList.remove('active');
+    document.getElementById('prog-' + currentStep).classList.remove('active');
+    document.getElementById('prog-' + currentStep).classList.add('done');
+
+    if (step < currentStep) {
+      // Going back — undo done state
+      for (let i = step; i <= currentStep; i++) {
+        document.getElementById('prog-' + i).classList.remove('done', 'active');
+      }
+      document.getElementById('prog-' + step).classList.add('active');
+    }
+
+    currentStep = step;
+    document.getElementById('panel-' + currentStep).classList.add('active');
+    document.getElementById('prog-' + currentStep).classList.add('active');
+
+    // Scroll to top of form
+    document.getElementById('panel-' + currentStep).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── CHECKBOX TOGGLE ──
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+  }
+
+  // ── GET CHECKED VALUES ──
+  function getChecked(gridId) {
+    const items = document.querySelectorAll('#' + gridId + ' .checkbox-item.checked input');
+    return Array.from(items).map(i => i.value).join(', ') || 'None';
+  }
+
+  // ── WHATSAPP REDIRECT ──
+  function submitToWhatsApp() {
+    const phone = '2348106649574'; // unchanged for WA API 
+
+    const name       = (document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value).trim() || 'Not provided';
+    const clientPhone = document.getElementById('phone').value || 'Not provided';
+    const email      = document.getElementById('email').value || 'Not provided';
+    const referral   = document.getElementById('referral').value || 'Not provided';
+
+    const eventType  = document.getElementById('eventType').value || 'Not provided';
+    const eventDate  = document.getElementById('eventDate').value || 'TBD';
+    const guests     = document.getElementById('guestCount').value || 'Not provided';
+    const budget     = document.getElementById('budget').value || 'Not provided';
+    const venueStatus = document.getElementById('venueStatus').value || 'Not provided';
+    const venue      = document.getElementById('venue').value || 'TBD';
+    const pkg        = document.getElementById('package').value || 'Not provided';
+
+    const theme      = document.getElementById('theme').value || 'Not provided';
+    const colours    = document.getElementById('colours').value || 'Not provided';
+    const vision     = document.getElementById('vision').value || 'Not provided';
+    const mustHave   = document.getElementById('mustHave').value || 'Not provided';
+    const mustAvoid  = document.getElementById('mustAvoid').value || 'Not provided';
+
+    const confirmed  = getChecked('confirmedVendors');
+    const needed     = getChecked('neededVendors');
+    const vendorNotes = document.getElementById('vendorNotes').value || 'None';
+    const extraNotes = document.getElementById('extraNotes').value || 'None';
+
+    const msg = `Hello Tazza! 👋 I'd love to get a proposal for my event. Here are my details:
+
+*— ABOUT ME —*
+Name: ${name}
+Phone: ${clientPhone}
+Email: ${email}
+Heard about you via: ${referral}
+
+*— EVENT DETAILS —*
+Event Type: ${eventType}
+Event Date: ${eventDate}
+Guest Count: ${guests}
+Budget Range: ${budget}
+Service Package: ${pkg}
+Venue Status: ${venueStatus}
+Venue: ${venue}
+
+*— VISION & STYLE —*
+Theme: ${theme}
+Colour Palette: ${colours}
+Dream Event Description: ${vision}
+Must-Haves: ${mustHave}
+Must-Avoids: ${mustAvoid}
+
+*— VENDORS —*
+Already Confirmed: ${confirmed}
+Need Help Sourcing: ${needed}
+Vendor Notes: ${vendorNotes}
+
+*— ADDITIONAL NOTES —*
+${extraNotes}
+
+Looking forward to hearing from you! 🎉`;
+
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
+  }
+</script>
+</body>
+</html>
